@@ -1,5 +1,5 @@
 bump:
-ifeq ("$(git status | grep "nothing to commit, working tree clean")", "")
+ifeq ("$(git status | grep 'nothing to commit, working tree clean')", "")
 	echo "Please commit first"
 	exit 1
 endif
