@@ -15,6 +15,7 @@ type CorsMiddlewareOptions struct {
 	ContentType  *string
 }
 
+// CorsMiddleware Cors Middleware
 func CorsMiddleware(options ...CorsMiddlewareOptions) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if c.Request.Method != "OPTIONS" {
@@ -52,6 +53,7 @@ func CorsMiddleware(options ...CorsMiddlewareOptions) gin.HandlerFunc {
 	}
 }
 
+// LoggerMiddleware Logger Middleware
 func LoggerMiddleware() gin.HandlerFunc {
 	if gin.IsDebugging() {
 		return gin.Logger()
@@ -76,4 +78,15 @@ func LoggerMiddleware() gin.HandlerFunc {
 			param.ErrorMessage,
 		)
 	})
+}
+
+/**/
+// Helpers
+/**/
+
+// NewMiddlewareExtender concat middleware
+func NewMiddlewareExtender(baseMiddleware ...gin.HandlerFunc) func(handlerFunc ...gin.HandlerFunc) []gin.HandlerFunc {
+	return func(middlewares ...gin.HandlerFunc) []gin.HandlerFunc {
+		return append(baseMiddleware, middlewares...)
+	}
 }
