@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CorsMiddlewareOptions Cors Middleware Options
 type CorsMiddlewareOptions struct {
 	AllowOrigin  *string
 	AllowMethods *string
@@ -53,9 +54,21 @@ func CorsMiddleware(options ...CorsMiddlewareOptions) gin.HandlerFunc {
 	}
 }
 
+// LoggerMiddlewareOptions Logger Middleware Options
+type LoggerMiddlewareOptions struct {
+	SkipPaths []string
+}
+
 // LoggerMiddleware Logger Middleware
-func LoggerMiddleware() gin.HandlerFunc {
+func LoggerMiddleware(options ...LoggerMiddlewareOptions) gin.HandlerFunc {
 	if gin.IsDebugging() {
+		if len(options) > 0 {
+			o := options[0]
+			return gin.LoggerWithConfig(gin.LoggerConfig{
+				SkipPaths: o.SkipPaths,
+			})
+		}
+
 		return gin.Logger()
 	}
 
