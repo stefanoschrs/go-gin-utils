@@ -78,6 +78,17 @@ func LoggerMiddleware(options ...LoggerMiddlewareOptions) gin.HandlerFunc {
 			return ""
 		}
 
+		if len(options) > 0 {
+			o := options[0]
+			if len(o.SkipPaths) > 0 {
+				for _, skipPath := range o.SkipPaths {
+					if skipPath == param.Path {
+						return ""
+					}
+				}
+			}
+		}
+
 		// Standardized access log format
 		return fmt.Sprintf("%s - [%s] \"%s %s %s %d %s \"%s\" %s\"\n",
 			param.ClientIP,
